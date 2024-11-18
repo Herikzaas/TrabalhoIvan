@@ -14,6 +14,10 @@ driver.get(url)
 
 produtos = driver.find_elements(By.CSS_SELECTOR, "h2 a.a-link-normal")
 
+
+cont = 0
+
+
 for cafe in produtos :
     link = cafe.get_attribute('href')
     driver.execute_script("window.open(arguments[0]);", link)
@@ -22,19 +26,18 @@ for cafe in produtos :
     nome = driver.find_element(By.ID,'productTitle')
     precoInt = driver.find_element(By.CLASS_NAME,'a-price-whole')
     precoDec = driver.find_element(By.CLASS_NAME,'a-price-fraction')
-    img = driver.find_element(By.ID, 'imgTagWrapperId')
-    print(img)
-    urlImg = img.get_attribute('src')
-    extensao = urlImg.split(".")[-1]
-    urlDestino = "Trabalho\\img\\" + id + "." + extensao
 
-    wget.download(urlImg, urlDestino)
-
+    Image = driver.find_element(By.ID, "landingImage")
+    urlOrigem = Image.get_attribute('src')
+    extensao = urlOrigem.split(".")[-1]
+    urlDestino = "Trabalho\\img\\" + str(cont) + "." + extensao
+    wget.download(urlOrigem, urlDestino)
+    
     print(nome.text)
     print(f"{precoInt.text},{precoDec.text}")
 
 
-    
+    cont += 1
     time.sleep(5)
     driver.close()
     driver.switch_to.window(driver.window_handles[0])
